@@ -14,12 +14,12 @@ body {
 }
 
 .main-container {
-    height: 90vh;
+    height: 100vh;
 }
 
 .main-container{
-    height: 90vh;
-    display: flex;
+    /* height: 90vh; */
+    display: block;
     line-height: 1.5;
     /* display: flex; */
     /* justify-content: center; */
@@ -41,14 +41,108 @@ body {
     font-size: 2rem;
 }
 
-.right{
+.main-container .right{
     color: #AEAEAE;
     font-size: 1rem;
     margin: 10% 2% 5% 5%;
 }
 
-.bottom-container{
+.startHereButton {
+    background-color: #54BAB9;
+    color: #ffff;
+    padding: 20px;
+    border-radius: 15px;
+
+    display: inline-block;
+}
+
+
+.startHereButton:hover {
+    background-color: #9ED2C6;
+    /* padding: 20px;
+    border-radius: 15px;
+
+    display: inline-block; */
+}
+
+.left a {
+    color: #ffff;
+}
+
+.left a:link {
+    text-decoration: none;
+}
+.left a:hover {
+    text-decoration: none;
+}
+
+.calculations {
+    background-color: #ffff;
+    font-size: 1rem;
+    margin: 10% 5% 5% 5%;
+    height: auto !important;
+}
+
+.calculations .col-sm-4{
     text-align: center;
+}
+
+.calcSections{
+    padding: 20px 0 20px 0;
+}
+#sponsorDetails .col-sm-2{
+    text-align: center;
+}
+.spacer {
+    padding: 20px 0 20px 20px;
+}
+
+
+hr {
+    border-top: dotted 2px;
+    height:2px;
+    color:gray;
+    background-color:gray;
+    width: 50%;
+    margin-left: 25% !important;
+    margin-right: 25% !important;
+    
+    
+}
+.hidden {
+    /* visibility: hidden;
+    max-height: 0;
+    display: none; */
+}
+.hidden2{
+    visibility: hidden;
+    max-height: 0;
+    display: none;
+}
+
+.button-background, .btn-secondary {
+    background-color: #F7ECDE !important;
+    color: #AEAEAE !important;
+}
+
+.calculateButtonArea {
+    margin-left: 25% !important;
+    text-align: center;
+    width: 50%;
+}
+
+#resultsSection {
+    background-color: #F7ECDE;
+}
+
+.endSection{
+    margin: 5% 2% 25% 5% !important;
+}
+
+.bottom-container{
+    display: block;
+    text-align: center;
+    flex-wrap: nowrap !important;
 }
 .bottom-container a, .bottom-container p{
     padding: 0% 8%;

@@ -10,6 +10,7 @@
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 
+    <!-- Google Analytics page -->
 </head>
 <body>
     
@@ -30,26 +31,263 @@
                 </div>
 
         </div>
-        <div class="main-container row calculations" id="calcID">
+        <!-- <form action="javascript:void(0);"> -->
+        <div class="main-container row calculations container-fluid" id="calcID">
         
-            <div class="col-m-6 right">
-                <p>Perform your calculations at a click</p>
-                <div class="row">
-                    <div class="col-4">
-                        <button type="button" class="btn btn-outline-dark">Light</button>
+            <div class="col-m-6 right" class="btn-group btn-group-toggle" data-toggle="buttons">
+                <p>Section I - Perform your calculations at a click</p>
+                <!-- Selecting the calculation type -->
+                <div class="row calcSections" id="optionsCalc-div">
+                    <div class="col-sm-4">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsCalc" value="SuperVisa" autocomplete="off"> SuperVisa
+                        </label>
                     </div>
-                    <div class="col-4">
-                        <button type="button" class="btn btn-outline-dark">Light</button>
+                    <div class="col-sm-4">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsCalc" value="PGP-2021" autocomplete="off"> PGP-2021 (except QC)
+                        </label>
                     </div>
-                    <div class="col-4">
-                        <button type="button" class="btn btn-outline-dark">Light</button>
+                    <div class="col-sm-4">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsCalc" value="PGP-2022" autocomplete="off" disabled> PGP-2022 (not available)
+                        </label>
                     </div>
                 </div>
+
+                <!-- Sponsor Details -->
+                <hr>
+                <div class="row calcSections" id="sponsorDetails">
+                    <p><em>Section II -Sponsor Details</em></p>
+                    <div class="row spacer">
+                        <label class="">Name of Sponsor (your name) <input type="text" name="sponsorName" value="" autocomplete="off"></label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsSponsorStatus" value="Single" autocomplete="off"> Single
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsSponsorStatus" value="Married" autocomplete="off"> Married
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsSponsorStatus" value="Common-Law" autocomplete="off"> Common-Law 
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsSponsorStatus" value="Seperated" autocomplete="off"> Seperated
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsSponsorStatus" value="Divorced" autocomplete="off"> Divorced
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsSponsorStatus" value="Widowed" autocomplete="off"> Widowed </label>
+                    </div>
+                </div>
+
+                <div class="row calcSections hidden" id="spouseDetails" style="display: none";>
+                    <p><em>Section II-1 - Partner Details</em></p>
+                    <div class="col-sm-6">
+                        <label class="">Name of Partner <input type="text" name="partnerName" value="" autocomplete="off"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="">Year of <span id="typeSponsor">text</span> <input type="number" id="yearInputSponsorChange" name="yearInputSponsorChangeName" min="1900" max="2004"> </label>
+                    </div>
+                </div>
+
+                <div class="row calcSections hidden" id="seperatedPartnerDetails" style="display: none" ;>
+                    <p><em>Section II-2 - Seperated Partner Detials</em></p>
+                    <div class="col-sm-4">
+                        <label class="">Name of Seperated Partner <input type="text" name="seperatedPartnerName" value="" autocomplete="off"></label>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="">Seperated Partner a Canadian Citizen? 
+                            <input type="radio" name="spePartnerCitizenship">   Yes  
+                            <input type="radio" name="spePartnerCitizenship">   No
+                        </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="">Seperated Partner in a Common-Law with another individual?
+                            <input type="radio" name="spePartnerStatus"> Yes
+                            <input type="radio" name="spePartnerStatus"> No
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Dependent Children Details -->
+                <div class="row calcSections" id="sponsorDependentDetails">
+                    <p><em>Section III - Dependent Children Details for <b>you</b> and <b>your partner</b></em></p>
+                    <p><em>(Also include Dependent children of Dependent Children)</em></p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Number of Dependent Children: <span id="numbChildren">0</span></label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="btn button-background" id="incChild">+ Add Children</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="btn button-background" id="decChild">- Reduce Children</label>
+                        </div>
+                    </div>
+                </div>
+
+               <hr>
+
+                <!-- Principal Sponsored -->
+
+                <div class="row calcSections" id="principalDetails">
+                    <p><em>Section IV - Prinicpal Applicant Details</em></p>
+                    <div class="row spacer">
+                        <label class="">Name of Principal Applicant (your Parent / Grand parent primary applicant) <input type="text" name="principalName" value=""
+                                autocomplete="off"></label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsPrincipalStatus" value="Single" autocomplete="off"> Single
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsPrincipalStatus" value="Married" autocomplete="off"> Married
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsPrincipalStatus" value="Common-Law" autocomplete="off"> Common-Law </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsPrincipalStatus" value="Seperated" autocomplete="off"> Seperated
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsPrincipalStatus" value="Divorced" autocomplete="off"> Divorced
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="btn button-background">
+                            <input type="radio" name="optionsPrincipalStatus" value="Widowed" autocomplete="off"> Widowed </label>
+                    </div>
+                </div>
+                
+                <div class="row calcSections hidden" id="principalSpouseDetails" style="display: none" ;>
+                    <p><em>Section IV-1 - Principal Partner Detials</em></p>
+                    <div class="col-sm-6">
+                        <label class="">Name of Partner <input type="text" name="principalPartnerName" value="" autocomplete="off"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="">Year of <span id="typePrincipal">text</span> <input type="number" id="yearInputPrincipalChange"
+                                min="1900" max="2004"> </label>
+                    </div>
+                </div>
+                
+                <div class="row calcSections hidden" id="seperatedPrincipalPartnerDetails" style="display: none" ;>
+                    <p><em>Section IV-2 - Seperated Partner Detials</em></p>
+                    <div class="col-sm-4">
+                        <label class="">Name of Seperated Partner <input type="text" name="seperatedPrincipalPartnerName" value=""
+                                autocomplete="off"></label>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="">Seperated Partner in a Common-Law with another individual?
+                            <input type="radio" name="spePrincipalPartnerStatus"> Yes
+                            <input type="radio" name="spePrincipalPartnerStatus"> No
+                        </label>
+                    </div>
+                </div>
+
+
+                <!-- Dependent Children Details of Principal Applicant -->
+                <div class="row calcSections" id="principalDependentDetails">
+                    <p><em>Section V - Dependent Children Details for <b>PRIMARY APPLICANT</b> and <b>THEIR partner</b></em></p>
+                    <p><em>(Also include Dependent children of Dependent Children)</em></p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Total Dependent Children of Applicant/Partner: <span id="numbPrincipalChildren">0</span></label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="btn button-background" id="incPrincipalChild">+ Add Children</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="btn button-background" id="decPrincipalChild">- Reduce Children</label>
+                        </div>
+                    </div>
+                </div>
+
+
+<!-- supervisa coming to Canda or not.... ? how to tackle and how to check in calculations -->
+
+                <hr>
+                <!-- Previously Sponsored by you -->
+                <div class="row calcSections" id="sponsorPrevious">
+                    <p><em>Section VI - Previous Sponsored by you (the Sponsoring Individual)</em></p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Number of Previously Sponsored Active Members (include all spouse and Dependent Children): <span id="numbPrevious">0</span></label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="btn button-background" id="incPreviousSponsor">+ Add</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="btn button-background" id="decPreviousSponsor">- Reduce</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary sponsored if rules by your partner -->
+                <div class="row calcSections hidden2" id="sponsorPartnerPrevious">
+                    <p><em>Section VI-1 - Previous Sponsored by your partner - DO NOT DOUBLE COUNT IF SAME INDIVIDUAL AS ABOVE</em></p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Number of Previously Sponsored Active Members (include all spouse and Dependent Children): <span
+                                    id="numbPartnerPrevious">0</span></label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="btn button-background" id="incPreviousPartnerSponsor">+ Add</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="btn button-background" id="decPreviousPartnerSponsor">- Reduce</label>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </div>
+        <div class="row calculateButtonArea">
+            <a class="startHereButton" href="#resultsSection"> Calculate Income Requirements</a>
+            <!-- >>> text of button to refresh calculations -->
+        </div>
+        <!-- </form> -->
+        <hr>
+
+        <!-- Results Section -->
+        <div class="main-container row hidden" id="resultsSection" style="display: none;">
+        
+            <div class="col-m-6 left endSection">
+                <h1>Your Results</h1>
+                <div id="resultsBox">
+                    
+                </div>
+            </div>
+
+
+
+            <div class="col-m-6 left endSection">
+                        <a class="startHereButton" href="#resultsSection"> Contact an expert</a>
+            </div>
+        
         </div>
 
         <!-- Footer -->
-        <div class="bottom-container fixed-bottom">
+        <div class="bottom-container">
             <div class="row">
                 <div class="col-sm-4">
                     <a class="footer-link" href="https://www.linkedin.com/">Privacy Notice</a>                    
