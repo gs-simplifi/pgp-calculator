@@ -48,17 +48,17 @@
                 <div class="row calcSections" id="optionsCalc-div">
                     <div class="col-sm-4">
                         <label class="btn button-background">
-                            <input type="radio" name="optionsCalc" value="SuperVisa" autocomplete="off"> SuperVisa
+                            <input type="radio" name="optionsCalc" value="SuperVisa2022" autocomplete="off"> SuperVisa - 2022
                         </label>
                     </div>
                     <div class="col-sm-4">
                         <label class="btn button-background">
-                            <input type="radio" name="optionsCalc" value="PGP-2021" autocomplete="off"> PGP-2021 (except QC)
+                            <input type="radio" name="optionsCalc" value="PGP2021" autocomplete="off"> PGP-2021 (except QC)
                         </label>
                     </div>
                     <div class="col-sm-4">
                         <label class="btn button-background">
-                            <input type="radio" name="optionsCalc" value="PGP-2022" autocomplete="off" disabled> PGP-2022 (not available)
+                            <input type="radio" name="optionsCalc" value="PGP2022" autocomplete="off" disabled> PGP-2022 (not available)
                         </label>
                     </div>
                 </div>
@@ -113,19 +113,16 @@
 
                 <div class="row calcSections hidden" id="seperatedPartnerDetails" style="display: none" ;>
                     <p><em>Section II-2 - Seperated Partner Detials</em></p>
-                    <div class="col-sm-4">
-                        <label class="">Name of Seperated Partner <input type="text" name="seperatedPartnerName" value="" autocomplete="off"></label>
-                    </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <label class="">Seperated Partner a Canadian Citizen? 
-                            <input type="radio" name="spePartnerCitizenship">   Yes  
-                            <input type="radio" name="spePartnerCitizenship">   No
+                            <input type="radio" value="Yes" name="spePartnerCitizenship">   Yes  
+                            <input type="radio" value="No" name="spePartnerCitizenship">   No
                         </label>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <label class="">Seperated Partner in a Common-Law with another individual?
-                            <input type="radio" name="spePartnerStatus"> Yes
-                            <input type="radio" name="spePartnerStatus"> No
+                            <input type="radio" value="Yes" name="spePartnerStatus"> Yes
+                            <input type="radio" value="No" name="spePartnerStatus"> No
                         </label>
                     </div>
                 </div>
@@ -194,20 +191,16 @@
                     </div>
                     <div class="col-sm-6">
                         <label class="">Year of <span id="typePrincipal">text</span> <input type="number" id="yearInputPrincipalChange"
-                                min="1900" max="2004"> </label>
+                                min="1900" > </label>
                     </div>
                 </div>
                 
                 <div class="row calcSections hidden" id="seperatedPrincipalPartnerDetails" style="display: none" ;>
                     <p><em>Section IV-2 - Seperated Partner Detials</em></p>
-                    <div class="col-sm-4">
-                        <label class="">Name of Seperated Partner <input type="text" name="seperatedPrincipalPartnerName" value=""
-                                autocomplete="off"></label>
-                    </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <label class="">Seperated Partner in a Common-Law with another individual?
-                            <input type="radio" name="spePrincipalPartnerStatus"> Yes
-                            <input type="radio" name="spePrincipalPartnerStatus"> No
+                            <input type="radio" value="Yes" name="spePrincipalPartnerStatus"> Yes
+                            <input type="radio" value="No" name="spePrincipalPartnerStatus"> No
                         </label>
                     </div>
                 </div>

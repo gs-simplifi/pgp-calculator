@@ -133,10 +133,12 @@ hr {
 
 #resultsSection {
     background-color: #F7ECDE;
+    height: auto;
 }
 
 .endSection{
     margin: 5% 2% 25% 5% !important;
+    height: auto;
 }
 
 .bottom-container{
