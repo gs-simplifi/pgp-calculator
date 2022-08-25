@@ -681,7 +681,9 @@ function calcCycle(cycleType, cycleYear) {
       finalNamesCount[counter] = [0, 0, 1];
     } else if (currYear - sponsorChildYearArray[i] >= 22) {
       finalNamesCount[counter] = [0, 1, 1];
-    } else if (currYear - sponsorChildYearArray[i] <= 1) {
+    } else if (currYear - sponsorChildYearArray[i] < 1) {
+      finalNamesCount[counter] = [0, 0, 0];
+    } else if (currYear - sponsorChildYearArray[i] === 1) {
       finalNamesCount[counter] = [1, 0, 0];
     } else if (currYear - sponsorChildYearArray[i] <= 2) {
       finalNamesCount[counter] = [1, 1, 0];
@@ -767,7 +769,9 @@ function calcCycle(cycleType, cycleYear) {
       finalNamesCount[counter] = [0, 0, 1];
     } else if (currYear - principalChildYearArray[i] >= 22) {
       finalNamesCount[counter] = [0, 1, 1];
-    } else if (currYear - principalChildYearArray[i] <= 1) {
+    } else if (currYear - principalChildYearArray[i] < 1) {
+      finalNamesCount[counter] = [0, 0, 0];
+    } else if (currYear - principalChildYearArray[i] === 1) {
       finalNamesCount[counter] = [1, 0, 0];
     } else if (currYear - principalChildYearArray[i] <= 2) {
       finalNamesCount[counter] = [1, 1, 0];
@@ -856,8 +860,8 @@ function calcCycle(cycleType, cycleYear) {
     );
   }
 
-  displarResultsHTMLTable +=
-    '<p>Please note, complex calculations (eg. death of dependents), or multiple change of relationships in last 3 years cannot be addressed by this tool.</p>';
+  // displarResultsHTMLTable +=
+  //   '<p>Please note, complex calculations (eg. death of dependents), or multiple change of relationships in last 3 years cannot be addressed by this tool.</p>';
   displarResultsHTMLTable += '</div>';
   return displarResultsHTMLTable;
 }

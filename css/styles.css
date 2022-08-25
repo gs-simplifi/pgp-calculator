@@ -97,6 +97,10 @@ body {
     padding: 20px 0 20px 20px;
 }
 
+.other-main {
+
+    height: auto !important;
+}
 
 hr {
     border-top: dotted 2px;
