@@ -32,9 +32,14 @@ var previousSponsorYearArray = [];
 var previousPartnerSponsorArray = [];
 var previousPartnerSponsorYearArray = [];
 
+var requiredCosignIncome = [0, 0, 0];
+var requiredIncome = [0, 0, 0];
+var currCosignFamilyCount = [0, 0, 0];
+var currFamilyCount = [0, 0, 0];
+
 // income Variables
 
-var supervisa2022 = [26620, 33140, 40742, 49466, 56104, 63276, 70448, 7172];
+var superVisa2022 = [26620, 33140, 40742, 49466, 56104, 63276, 70448, 7172];
 var pgpYear2018 = [40379, 40379, 49641, 60271, 68358, 77095, 85835, 8740];
 var pgpYear2019 = [41007, 41007, 50414, 61209, 69423, 78296, 87172, 8876];
 var pgpYear2020 = [32270, 32270, 39672, 48167, 54630, 61613, 68598, 6985];
@@ -184,6 +189,8 @@ $('#decChild').on('click', () => {
   if (sponsorChildCount > 0) {
     sponsorChildCount--;
     $('#primaryDependentSpan' + (sponsorChildCount + 1)).remove();
+    sponsorChildArray.pop();
+    sponsorChildYearArray.pop();
   }
   $('#numbChildren').text(sponsorChildCount);
 });
@@ -290,6 +297,8 @@ $('#decPrincipalChild').on('click', () => {
   if (principalChildCount > 0) {
     principalChildCount--;
     $('#primaryPrincipalDependentSpan' + (principalChildCount + 1)).remove();
+    principalChildArray.pop();
+    principalChildYearArray.pop();
   }
   $('#numbPrincipalChildren').text(principalChildCount);
 });
@@ -329,6 +338,8 @@ $('#decPreviousSponsor').on('click', () => {
   if (previousSponsor > 0) {
     previousSponsor--;
     $('#primaryPreviousSponsor' + (previousSponsor + 1)).remove();
+    previousSponsorArray.pop();
+    previousSponsorYearArray.pop();
   }
   $('#numbPrevious').text(previousSponsor);
 });
@@ -368,6 +379,8 @@ $('#decPreviousPartnerSponsor').on('click', () => {
   if (previousPartnerSponsor > 0) {
     previousPartnerSponsor--;
     $('#primaryPartnerPreviousSponsor' + (previousPartnerSponsor + 1)).remove();
+    previousPartnerSponsorArray.pop();
+    previousPartnerSponsorYearArray.pop();
   }
   $('#numbPartnerPrevious').text(previousPartnerSponsor);
 });
@@ -557,21 +570,42 @@ $('.calculateButtonArea .startHereButton').on('click', () => {
 });
 
 function calcSuperVisa2022() {
+  var cycleType = 'superVisa';
   var currYear = 2022;
-  var currFamilyCount = 0;
-  var requiredIncome = 0;
+
+  var result = calcCycle(cycleType, currYear);
+
+  return result;
+}
+function calcPGP2021() {
+  var cycleType = 'pgpYear';
+  var currYear = 2021;
+
+  var result = calcCycle(cycleType, currYear);
+
+  return result;
+  // var displarResultsHTMLTable =
+  //   '<div class="col-sm-6" id="resultsBox"><p>All Good - calcPGP2021</p></div>';
+  // return displarResultsHTMLTable;
+}
+function calcPGP2022() {
+  var displarResultsHTMLTable =
+    '<div class="col-sm-6" id="resultsBox"><p>All Good - calcPGP2022 is not released</p></div>';
+  return displarResultsHTMLTable;
+}
+
+function calcCycle(cycleType, cycleYear) {
+  var currYear = cycleYear;
   var finalNames = [];
   var finalNamesSection = [];
   var finalNamesCount = [];
   var finalCosignNamesCount = [];
-  var currCosignFamilyCount = 0;
-  var requiredCosignIncome = 0;
   var counter = 0;
   var cosignPossibleFlag = 0;
 
   // Sec II Calcs
   finalNames[counter] = yourName;
-  finalNamesCount[counter] = 1;
+  finalNamesCount[counter] = [1, 1, 1];
   finalCosignNamesCount[counter] = finalNamesCount[counter];
   finalNamesSection[counter] = 'Section II';
   counter++;
@@ -579,65 +613,87 @@ function calcSuperVisa2022() {
   if (sponsorStatus != 'Single') {
     finalNames[counter] = partnerName;
     finalNamesSection[counter] = 'Section II-1';
-    finalNamesCount[counter] = 1;
+    finalNamesCount[counter] = [1, 1, 1];
     yearInputSponsorChange = parseInt(yearInputSponsorChange);
     switch (sponsorStatus) {
       case 'Married':
-        cosignPossibleFlag = 1;
-        if (yearInputSponsorChange > currYear) {
-          finalNamesCount[counter] = 0;
-        }
-        break;
       case 'Common-Law':
         cosignPossibleFlag = 1;
         if (yearInputSponsorChange > currYear) {
-          finalNamesCount[counter] = 0;
+          finalNamesCount[counter] = [0, 0, 0];
+        } else if (yearInputSponsorChange === currYear) {
+          if (cycleType === 'superVisa') {
+            finalNamesCount[counter] = [1, 0, 0];
+          } else {
+            finalNamesCount[counter] = [0, 0, 0];
+          }
+        } else if (yearInputSponsorChange >= currYear - 1) {
+          finalNamesCount[counter] = [1, 0, 0];
+        } else if (yearInputSponsorChange >= currYear - 2) {
+          finalNamesCount[counter] = [1, 1, 0];
         }
+        finalCosignNamesCount[counter] = [1, 1, 1];
         break;
       case 'Seperated':
-        if (yearInputSponsorChange > currYear) {
-          finalNamesCount[counter] = 0;
-        } else {
-          if (spePartnerCitizenship == 'No' && spePartnerStatus == 'Yes') {
-            finalNamesCount[counter] = 0;
+        if (spePartnerCitizenship == 'No' && spePartnerStatus == 'Yes') {
+          if (yearInputSponsorChange > currYear) {
+            finalNamesCount[counter] = [1, 1, 1];
+          } else if (yearInputSponsorChange >= currYear - 1) {
+            finalNamesCount[counter] = [0, 1, 1];
+          } else if (yearInputSponsorChange >= currYear - 2) {
+            finalNamesCount[counter] = [0, 0, 1];
+          } else {
+            finalNamesCount[counter] = [0, 0, 0];
           }
         }
+        finalCosignNamesCount[counter] = finalNamesCount[counter];
         break;
       case 'Divorced':
-        if (yearInputSponsorChange <= currYear) {
-          finalNamesCount[counter] = 0;
-        }
-        break;
       case 'Widowed':
-        if (yearInputSponsorChange <= currYear) {
-          finalNamesCount[counter] = 0;
+        if (yearInputSponsorChange > currYear) {
+          finalNamesCount[counter] = [1, 1, 1];
+        } else if (yearInputSponsorChange >= currYear - 1) {
+          finalNamesCount[counter] = [0, 1, 1];
+        } else if (yearInputSponsorChange >= currYear - 2) {
+          finalNamesCount[counter] = [0, 0, 1];
+        } else {
+          finalNamesCount[counter] = [0, 0, 0];
         }
+        finalCosignNamesCount[counter] = finalNamesCount[counter];
         break;
       default:
-        finalNamesCount[counter] = 1;
+        finalNamesCount[counter] = [1, 1, 1];
+        finalCosignNamesCount[counter] = finalNamesCount[counter];
     }
-    finalCosignNamesCount[counter] = finalNamesCount[counter];
     counter++;
   }
 
   // Sec III Calcs
   for (var i = 0; i < sponsorChildCount; i++) {
     finalNames[counter] = sponsorChildArray[i];
-    finalNamesCount[counter] = 1;
+    finalNamesCount[counter] = [1, 1, 1];
     finalNamesSection[counter] = 'Section III';
-    if (
-      currYear - sponsorChildYearArray[i] >= 22 ||
-      currYear - sponsorChildYearArray[i] < 0
-    ) {
-      finalNamesCount[counter] = 0;
+    if (currYear - sponsorChildYearArray[i] < 0) {
+      finalNamesCount[counter] = [0, 0, 0];
+    } else if (currYear - sponsorChildYearArray[i] >= 24) {
+      finalNamesCount[counter] = [0, 0, 0];
+    } else if (currYear - sponsorChildYearArray[i] >= 23) {
+      finalNamesCount[counter] = [0, 0, 1];
+    } else if (currYear - sponsorChildYearArray[i] >= 22) {
+      finalNamesCount[counter] = [0, 1, 1];
+    } else if (currYear - sponsorChildYearArray[i] <= 1) {
+      finalNamesCount[counter] = [1, 0, 0];
+    } else if (currYear - sponsorChildYearArray[i] <= 2) {
+      finalNamesCount[counter] = [1, 1, 0];
     }
+
     finalCosignNamesCount[counter] = finalNamesCount[counter];
     counter++;
   }
 
   // Sec IV Calcs
   finalNames[counter] = principalName;
-  finalNamesCount[counter] = 1;
+  finalNamesCount[counter] = [1, 1, 1];
   finalNamesSection[counter] = 'Section IV';
   finalCosignNamesCount[counter] = finalNamesCount[counter];
   counter++;
@@ -646,40 +702,53 @@ function calcSuperVisa2022() {
   if (principalStatus != 'Single') {
     finalNames[counter] = principalPartnerName;
     finalNamesSection[counter] = 'Section IV-1';
-    finalNamesCount[counter] = 1;
+    finalNamesCount[counter] = [1, 1, 1];
     yearInputPrincipalChange = parseInt(yearInputPrincipalChange);
     switch (principalStatus) {
       case 'Married':
-        if (yearInputPrincipalChange > currYear) {
-          finalNamesCount[counter] = 0;
-        }
-        break;
       case 'Common-Law':
+        cosignPossibleFlag = 1;
         if (yearInputPrincipalChange > currYear) {
-          finalNamesCount[counter] = 0;
+          finalNamesCount[counter] = [0, 0, 0];
+        } else if (yearInputPrincipalChange === currYear) {
+          if (cycleType === 'superVisa') {
+            finalNamesCount[counter] = [1, 0, 0];
+          } else {
+            finalNamesCount[counter] = [0, 0, 0];
+          }
+        } else if (yearInputPrincipalChange >= currYear - 1) {
+          finalNamesCount[counter] = [1, 0, 0];
+        } else if (yearInputPrincipalChange >= currYear - 2) {
+          finalNamesCount[counter] = [1, 1, 0];
         }
         break;
       case 'Seperated':
-        if (yearInputPrincipalChange > currYear) {
-          finalNamesCount[counter] = 0;
-        } else {
-          if (spePrincipalPartnerStatus == 'Yes') {
-            finalNamesCount[counter] = 0;
+        if (spePrincipalPartnerStatus == 'Yes') {
+          if (yearInputPrincipalChange > currYear) {
+            finalNamesCount[counter] = [1, 1, 1];
+          } else if (yearInputPrincipalChange >= currYear - 1) {
+            finalNamesCount[counter] = [0, 1, 1];
+          } else if (yearInputPrincipalChange >= currYear - 2) {
+            finalNamesCount[counter] = [0, 0, 1];
+          } else {
+            finalNamesCount[counter] = [0, 0, 0];
           }
         }
         break;
       case 'Divorced':
-        if (yearInputPrincipalChange <= currYear) {
-          finalNamesCount[counter] = 0;
-        }
-        break;
       case 'Widowed':
-        if (yearInputPrincipalChange <= currYear) {
-          finalNamesCount[counter] = 0;
+        if (yearInputPrincipalChange > currYear) {
+          finalNamesCount[counter] = [1, 1, 1];
+        } else if (yearInputPrincipalChange >= currYear - 1) {
+          finalNamesCount[counter] = [0, 1, 1];
+        } else if (yearInputPrincipalChange >= currYear - 2) {
+          finalNamesCount[counter] = [0, 0, 1];
+        } else {
+          finalNamesCount[counter] = [0, 0, 0];
         }
         break;
       default:
-        finalNamesCount[counter] = 1;
+        finalNamesCount[counter] = [1, 1, 1];
     }
     finalCosignNamesCount[counter] = finalNamesCount[counter];
     counter++;
@@ -688,13 +757,20 @@ function calcSuperVisa2022() {
   // Sec V Calcs
   for (var i = 0; i < principalChildCount; i++) {
     finalNames[counter] = principalChildArray[i];
-    finalNamesCount[counter] = 1;
+    finalNamesCount[counter] = [1, 1, 1];
     finalNamesSection[counter] = 'Section V';
-    if (
-      currYear - principalChildYearArray[i] >= 22 ||
-      currYear - principalChildYearArray[i] < 0
-    ) {
-      finalNamesCount[counter] = 0;
+    if (currYear - principalChildYearArray[i] < 0) {
+      finalNamesCount[counter] = [0, 0, 0];
+    } else if (currYear - principalChildYearArray[i] >= 24) {
+      finalNamesCount[counter] = [0, 0, 0];
+    } else if (currYear - principalChildYearArray[i] >= 23) {
+      finalNamesCount[counter] = [0, 0, 1];
+    } else if (currYear - principalChildYearArray[i] >= 22) {
+      finalNamesCount[counter] = [0, 1, 1];
+    } else if (currYear - principalChildYearArray[i] <= 1) {
+      finalNamesCount[counter] = [1, 0, 0];
+    } else if (currYear - principalChildYearArray[i] <= 2) {
+      finalNamesCount[counter] = [1, 1, 0];
     }
     finalCosignNamesCount[counter] = finalNamesCount[counter];
     counter++;
@@ -703,13 +779,16 @@ function calcSuperVisa2022() {
   // Sec VI Calcs
   for (var i = 0; i < previousSponsorArray.length; i++) {
     finalNames[counter] = previousSponsorArray[i];
-    finalNamesCount[counter] = 1;
+    finalNamesCount[counter] = [1, 1, 1];
     finalNamesSection[counter] = 'Section VI';
-    if (
-      currYear - previousSponsorYearArray[i] >= 20 ||
-      currYear - previousSponsorYearArray[i] < 0
-    ) {
-      finalNamesCount[counter] = 0;
+    if (currYear - previousSponsorYearArray[i] < 0) {
+      finalNamesCount[counter] = [0, 0, 0];
+    } else if (currYear - previousSponsorYearArray[i] >= 20) {
+      finalNamesCount[counter] = [0, 0, 0];
+    } else if (currYear - previousSponsorYearArray[i] >= 19) {
+      finalNamesCount[counter] = [0, 0, 1];
+    } else if (currYear - previousSponsorYearArray[i] >= 18) {
+      finalNamesCount[counter] = [0, 1, 1];
     }
     finalCosignNamesCount[counter] = finalNamesCount[counter];
     counter++;
@@ -718,35 +797,183 @@ function calcSuperVisa2022() {
   // Sec VI-1 Calcs
   for (var i = 0; i < previousPartnerSponsorArray.length; i++) {
     finalNames[counter] = previousPartnerSponsorArray[i];
-    finalNamesCount[counter] = 0;
-    finalCosignNamesCount[counter] = 1;
+    finalNamesCount[counter] = [0, 0, 0];
+    finalCosignNamesCount[counter] = [1, 1, 1];
     finalNamesSection[counter] = 'Section VI';
-    if (
-      currYear - previousPartnerSponsorYearArray[i] >= 20 ||
-      currYear - previousPartnerSponsorYearArray[i] < 0
-    ) {
-      finalCosignNamesCount[counter] = 0;
+    if (currYear - previousPartnerSponsorYearArray[i] < 0) {
+      finalCosignNamesCount[counter] = [0, 0, 0];
+    } else if (currYear - previousPartnerSponsorYearArray[i] >= 20) {
+      finalCosignNamesCount[counter] = [0, 0, 0];
+    } else if (currYear - previousPartnerSponsorYearArray[i] >= 19) {
+      finalCosignNamesCount[counter] = [0, 0, 1];
+    } else if (currYear - previousPartnerSponsorYearArray[i] >= 18) {
+      finalCosignNamesCount[counter] = [0, 1, 1];
     }
     counter++;
   }
 
-  var displarResultsHTMLTable = (displarResultsHTMLTable =
-    ' <div class="col-sm-6" id="resultsBox">' +
+  calculateIncome(
+    cycleType,
+    currYear,
+    finalNames,
+    finalNamesCount,
+    finalCosignNamesCount
+  );
+  var displayName = '';
+  switch (cycleType) {
+    case 'superVisa':
+      displayName = 'Super Visa - ' + currYear;
+      break;
+    case 'pgpYear':
+      displayName = 'PGP - ' + currYear;
+      break;
+  }
+  var displarResultsHTMLTable =
+    '<div class="col-sm-6" id="resultsBox"><p>' +
+    displayName +
+    ' Calculations as a Single Sponsor</p>';
+  displarResultsHTMLTable += detailedCalc(
+    cycleType,
+    currYear,
+    finalNames,
+    finalNamesSection,
+    finalNamesCount,
+    currFamilyCount,
+    requiredIncome
+  );
+
+  if (cosignPossibleFlag) {
+    displarResultsHTMLTable +=
+      '<p>' + displayName + ' Calculations with Co-Signer</p>';
+    displarResultsHTMLTable += detailedCalc(
+      cycleType,
+      currYear,
+      finalNames,
+      finalNamesSection,
+      finalCosignNamesCount,
+      currCosignFamilyCount,
+      requiredCosignIncome
+    );
+  }
+
+  displarResultsHTMLTable +=
+    '<p>Please note, complex calculations (eg. death of dependents), or multiple change of relationships in last 3 years cannot be addressed by this tool.</p>';
+  displarResultsHTMLTable += '</div>';
+  return displarResultsHTMLTable;
+}
+
+function calculateIncome(
+  cycleType,
+  currYear,
+  finalNames,
+  finalNamesCount,
+  finalCosignNamesCount
+) {
+  currCosignFamilyCount = [0, 0, 0];
+  currFamilyCount = [0, 0, 0];
+
+  for (var j = 0; j < 3; j++) {
+    for (var i = 0; i < finalNames.length; i++) {
+      if (finalNamesCount[i][j] === 1) {
+        currFamilyCount[j]++;
+      }
+      if (finalCosignNamesCount[i][j] === 1) {
+        currCosignFamilyCount[j]++;
+      }
+    }
+  }
+
+  var tableIncomeName = '';
+
+  var k = 1;
+  var tableIncome = [];
+
+  switch (cycleType) {
+    case 'superVisa':
+      k = 1;
+      tableIncomeName = cycleType + currYear;
+      tableIncome[0] = eval(tableIncomeName);
+      break;
+    case 'pgpYear':
+      k = 3;
+      for (var z = 0; z < 3; z++) {
+        tableIncomeName = cycleType + (currYear - z - 1);
+        tableIncome[z] = eval(tableIncomeName);
+      }
+      break;
+  }
+
+  // calculate the value
+  for (var j = 0; j < k; j++) {
+    if (currFamilyCount[j] >= tableIncome[j].length) {
+      requiredIncome[j] =
+        tableIncome[j][tableIncome[j].length - 1] *
+          (currFamilyCount[j] - (tableIncome[j].length - 1)) +
+        tableIncome[j][tableIncome[j].length - 2];
+    } else {
+      requiredIncome[j] = tableIncome[j][currFamilyCount[j] - 1];
+    }
+    if (currCosignFamilyCount[j] >= tableIncome[j].length) {
+      requiredCosignIncome[j] =
+        tableIncome[j][tableIncome[j].length - 1] *
+          (currCosignFamilyCount[j] - (tableIncome[j].length - 1)) +
+        tableIncome[j][tableIncome[j].length - 2];
+    } else {
+      requiredCosignIncome[j] = tableIncome[j][currCosignFamilyCount[j] - 1];
+    }
+  }
+}
+
+function detailedCalc(
+  cycleType,
+  currYear,
+  finalNames,
+  finalNamesSection,
+  finalNamesCount,
+  currFamilyCount,
+  requiredIncome
+  //inputs in this function have global names but local meanings
+) {
+  var k = 1;
+  switch (cycleType) {
+    case 'superVisa':
+      k = 1;
+      break;
+    case 'pgpYear':
+      k = 3;
+      for (var z = 0; z < 3; z++) {}
+      break;
+  }
+  // var displarResultsHTMLTable =
+  //   '<div class="col-sm-6" id="resultsBox"><p>SuperVisa Calculations as a Single Sponsor</p>';
+  var displarResultsHTMLTable = '';
+  var columnHeadings = '';
+  var totalCountRow = '';
+  var blackRow = '';
+  var earningRow = '';
+
+  for (var i = 0; i < k; i++) {
+    columnHeadings += '<th scope="col">' + (currYear - 1 - i) + '</th>';
+    totalCountRow += '<td>' + currFamilyCount[i] + '</td>';
+    blackRow += '<td></td>';
+    earningRow += '<td>' + '' + dollarUS.format(requiredIncome[i]) + '</td>';
+  }
+
+  displarResultsHTMLTable += displarResultsHTMLTable =
     '<table class="table table-striped thead-dark">' +
     '<thead><tr>' +
     '<th scope="col">#</th>' +
     '<th scope="col">Section</th>' +
     '<th scope="col">Name</th>' +
-    '<th scope="col">Count in Calculation (Single)</th>');
-
-  if (cosignPossibleFlag) {
-    displarResultsHTMLTable +=
-      '<th scope="col">Count in Calculation (Co-Sign)</th>';
-  }
-  displarResultsHTMLTable += '</tr></thead><tbody>';
+    columnHeadings +
+    '</tr></thead><tbody>';
 
   // Fill table
   for (var i = 0; i < finalNames.length; i++) {
+    var contentRows = '';
+    for (var j = 0; j < k; j++) {
+      contentRows += '<td>' + finalNamesCount[i][j] + '</td>';
+    }
     displarResultsHTMLTable +=
       '<tr><th scope="row">' +
       (i + 1) +
@@ -754,86 +981,25 @@ function calcSuperVisa2022() {
       finalNamesSection[i] +
       '</td><td>' +
       finalNames[i] +
-      '</td><td>' +
-      finalNamesCount[i] +
-      '</td>';
-    if (cosignPossibleFlag) {
-      displarResultsHTMLTable += '<td>' + finalCosignNamesCount[i] + '</td>';
-    }
-    displarResultsHTMLTable += '</tr>';
-    if (finalNamesCount[i] === 1) {
-      currFamilyCount++;
-    }
-    if (finalCosignNamesCount[i] === 1) {
-      currCosignFamilyCount++;
-    }
-  }
-  // calculate the value
-  if (currFamilyCount >= supervisa2022.length) {
-    requiredIncome =
-      supervisa2022[supervisa2022.length - 1] *
-        (currFamilyCount - (supervisa2022.length - 1)) +
-      supervisa2022[supervisa2022.length - 2];
-  } else {
-    requiredIncome = supervisa2022[currFamilyCount - 1];
-  }
-  if (currCosignFamilyCount >= supervisa2022.length) {
-    requiredCosignIncome =
-      supervisa2022[supervisa2022.length - 1] *
-        (currCosignFamilyCount - (supervisa2022.length - 1)) +
-      supervisa2022[supervisa2022.length - 2];
-  } else {
-    requiredCosignIncome = supervisa2022[currCosignFamilyCount - 1];
+      '</td>' +
+      contentRows;
   }
 
   displarResultsHTMLTable +=
-    '<tr class="table-info"><th scope="row">' +
+    '<tr class="table-info"><th scope="row" colspan="3">' +
     'Total' +
-    '</th><td>' +
-    '' +
-    '</td><td>' +
-    '' +
-    '</td><td>' +
-    currFamilyCount +
-    '</td>';
-  if (cosignPossibleFlag) {
-    displarResultsHTMLTable += '<td>' + currCosignFamilyCount + '</td>';
-  }
+    '</th>' +
+    totalCountRow;
+  displarResultsHTMLTable += '</tr><tr class="table-dark"><th></th><td></td>';
+  displarResultsHTMLTable += blackRow;
   displarResultsHTMLTable +=
-    '</tr><tr class="table-dark"><th></th><td></td><td></td><td>';
-  if (cosignPossibleFlag) {
-    displarResultsHTMLTable += '<td></td>';
-  }
-  displarResultsHTMLTable +=
-    '</td></tr>' +
-    '<tr class="table-warning"><th scope="row">' +
-    '' +
-    '</th><td>' +
-    '' +
-    '</td><td>' +
-    'Earning Required in ' +
-    (currYear - 1) +
-    '</td><td>' +
-    dollarUS.format(requiredIncome) +
-    '</td>';
-  if (cosignPossibleFlag) {
-    displarResultsHTMLTable +=
-      '<td>' + dollarUS.format(requiredCosignIncome) + '</td>';
-  }
-  displarResultsHTMLTable += '</tr></tbody></table></div>';
-  return displarResultsHTMLTable;
-}
-function calcPGP2021() {
-  var displarResultsHTMLTable =
-    '<div class="col-sm-6" id="resultsBox"><p>All Good - calcPGP2021</p></div>';
-  return displarResultsHTMLTable;
-}
-function calcPGP2022() {
-  var displarResultsHTMLTable =
-    '<div class="col-sm-6" id="resultsBox"><p>All Good - calcPGP2022 is not released</p></div>';
-  return displarResultsHTMLTable;
-}
+    '<td></td></tr>' +
+    '<tr class="table-warning"><th scope="row" colspan="3">' +
+    'Earning Required' +
+    '</th>' +
+    earningRow;
 
-/// add google search terms
-// Text on t&C
-// Text on complicated family - death etc.
+  displarResultsHTMLTable += '</tr></tbody></table>';
+
+  return displarResultsHTMLTable;
+}
