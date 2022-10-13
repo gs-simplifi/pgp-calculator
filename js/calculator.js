@@ -43,6 +43,7 @@ var superVisa2022 = [26620, 33140, 40742, 49466, 56104, 63276, 70448, 7172];
 var pgpYear2018 = [40379, 40379, 49641, 60271, 68358, 77095, 85835, 8740];
 var pgpYear2019 = [41007, 41007, 50414, 61209, 69423, 78296, 87172, 8876];
 var pgpYear2020 = [32270, 32270, 39672, 48167, 54630, 61613, 68598, 6985];
+var pgpYear2021 = [32898, 32898, 40444, 49106, 55694, 62814, 69934, 7120];
 
 let dollarUS = Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -589,9 +590,15 @@ function calcPGP2021() {
   // return displarResultsHTMLTable;
 }
 function calcPGP2022() {
-  var displarResultsHTMLTable =
-    '<div class="col-sm-6" id="resultsBox"><p>All Good - calcPGP2022 is not released</p></div>';
-  return displarResultsHTMLTable;
+  // var displarResultsHTMLTable =
+  //   '<div class="col-sm-6" id="resultsBox"><p>All Good - calcPGP2022 is not released</p></div>';
+  // return displarResultsHTMLTable;
+  var cycleType = 'pgpYear';
+  var currYear = 2022;
+
+  var result = calcCycle(cycleType, currYear);
+
+  return result;
 }
 
 function calcCycle(cycleType, cycleYear) {
