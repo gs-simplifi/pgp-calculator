@@ -40,10 +40,12 @@ var currFamilyCount = [0, 0, 0];
 // income Variables
 
 var superVisa2022 = [26620, 33140, 40742, 49466, 56104, 63276, 70448, 7172];
+var superVisa2023 = [27514, 34254, 42100, 51128, 57988, 65400, 72814, 7412];
 var pgpYear2018 = [40379, 40379, 49641, 60271, 68358, 77095, 85835, 8740];
 var pgpYear2019 = [41007, 41007, 50414, 61209, 69423, 78296, 87172, 8876];
 var pgpYear2020 = [32270, 32270, 39672, 48167, 54630, 61613, 68598, 6985];
 var pgpYear2021 = [32898, 32898, 40444, 49106, 55694, 62814, 69934, 7120];
+var pgpYear2022 = [43082, 43082, 52965, 64306, 72935, 82259, 91582, 9324];
 
 let dollarUS = Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -546,6 +548,9 @@ $('.calculateButtonArea .startHereButton').on('click', () => {
       // do calcs
 
       switch (calculationType) {
+        case 'SuperVisa2023':
+          displarResultsHTMLTable = calcSuperVisa2023();
+          break;
         case 'SuperVisa2022':
           displarResultsHTMLTable = calcSuperVisa2022();
           // displarResultsHTMLTable =
@@ -556,6 +561,9 @@ $('.calculateButtonArea .startHereButton').on('click', () => {
           break;
         case 'PGP2022':
           displarResultsHTMLTable = calcPGP2022();
+          break;
+        case 'PGP2023':
+          displarResultsHTMLTable = calcPGP2023();
           break;
       }
       $('#resultsSection h1').text('Your Results');
@@ -570,6 +578,14 @@ $('.calculateButtonArea .startHereButton').on('click', () => {
   });
 });
 
+function calcSuperVisa2023() {
+  var cycleType = 'superVisa';
+  var currYear = 2023;
+
+  var result = calcCycle(cycleType, currYear);
+
+  return result;
+}
 function calcSuperVisa2022() {
   var cycleType = 'superVisa';
   var currYear = 2022;
@@ -595,6 +611,14 @@ function calcPGP2022() {
   // return displarResultsHTMLTable;
   var cycleType = 'pgpYear';
   var currYear = 2022;
+
+  var result = calcCycle(cycleType, currYear);
+
+  return result;
+}
+function calcPGP2023() {
+  var cycleType = 'pgpYear';
+  var currYear = 2023;
 
   var result = calcCycle(cycleType, currYear);
 
@@ -641,16 +665,16 @@ function calcCycle(cycleType, cycleYear) {
         }
         finalCosignNamesCount[counter] = [1, 1, 1];
         break;
-      case 'Seperated':
+      case 'Seperated': // changed this on Oct 2023
         if (spePartnerCitizenship == 'No' && spePartnerStatus == 'Yes') {
           if (yearInputSponsorChange > currYear) {
             finalNamesCount[counter] = [1, 1, 1];
           } else if (yearInputSponsorChange >= currYear - 1) {
-            finalNamesCount[counter] = [0, 1, 1];
+            finalNamesCount[counter] = [1, 1, 1];
           } else if (yearInputSponsorChange >= currYear - 2) {
-            finalNamesCount[counter] = [0, 0, 1];
+            finalNamesCount[counter] = [1, 1, 1];
           } else {
-            finalNamesCount[counter] = [0, 0, 0];
+            finalNamesCount[counter] = [1, 1, 1];
           }
         }
         finalCosignNamesCount[counter] = finalNamesCount[counter];
@@ -682,12 +706,14 @@ function calcCycle(cycleType, cycleYear) {
     finalNamesSection[counter] = 'Section III';
     if (currYear - sponsorChildYearArray[i] < 0) {
       finalNamesCount[counter] = [0, 0, 0];
-    } else if (currYear - sponsorChildYearArray[i] >= 24) {
+    } else if (currYear - sponsorChildYearArray[i] > 25) {
       finalNamesCount[counter] = [0, 0, 0];
-    } else if (currYear - sponsorChildYearArray[i] >= 23) {
+    } else if (currYear - sponsorChildYearArray[i] == 25) {
       finalNamesCount[counter] = [0, 0, 1];
-    } else if (currYear - sponsorChildYearArray[i] >= 22) {
+    } else if (currYear - sponsorChildYearArray[i] == 24) {
       finalNamesCount[counter] = [0, 1, 1];
+    } else if (currYear - sponsorChildYearArray[i] <= 23) {
+      finalNamesCount[counter] = [1, 1, 1];
     } else if (currYear - sponsorChildYearArray[i] < 1) {
       finalNamesCount[counter] = [0, 0, 0];
     } else if (currYear - sponsorChildYearArray[i] === 1) {
@@ -742,6 +768,16 @@ function calcCycle(cycleType, cycleYear) {
           } else {
             finalNamesCount[counter] = [0, 0, 0];
           }
+        } else {
+          if (yearInputPrincipalChange > currYear) {
+            finalNamesCount[counter] = [1, 1, 1];
+          } else if (yearInputPrincipalChange >= currYear - 1) {
+            finalNamesCount[counter] = [1, 1, 1];
+          } else if (yearInputPrincipalChange >= currYear - 2) {
+            finalNamesCount[counter] = [1, 1, 1];
+          } else {
+            finalNamesCount[counter] = [1, 1, 1];
+          }
         }
         break;
       case 'Divorced':
@@ -770,12 +806,14 @@ function calcCycle(cycleType, cycleYear) {
     finalNamesSection[counter] = 'Section V';
     if (currYear - principalChildYearArray[i] < 0) {
       finalNamesCount[counter] = [0, 0, 0];
-    } else if (currYear - principalChildYearArray[i] >= 24) {
+    } else if (currYear - principalChildYearArray[i] > 25) {
       finalNamesCount[counter] = [0, 0, 0];
-    } else if (currYear - principalChildYearArray[i] >= 23) {
+    } else if (currYear - principalChildYearArray[i] == 25) {
       finalNamesCount[counter] = [0, 0, 1];
-    } else if (currYear - principalChildYearArray[i] >= 22) {
+    } else if (currYear - principalChildYearArray[i] == 24) {
       finalNamesCount[counter] = [0, 1, 1];
+    } else if (currYear - principalChildYearArray[i] <= 23) {
+      finalNamesCount[counter] = [1, 1, 1];
     } else if (currYear - principalChildYearArray[i] < 1) {
       finalNamesCount[counter] = [0, 0, 0];
     } else if (currYear - principalChildYearArray[i] === 1) {
@@ -794,7 +832,7 @@ function calcCycle(cycleType, cycleYear) {
     finalNamesSection[counter] = 'Section VI';
     if (currYear - previousSponsorYearArray[i] < 0) {
       finalNamesCount[counter] = [0, 0, 0];
-    } else if (currYear - previousSponsorYearArray[i] >= 20) {
+    } else if (currYear - previousSponsorYearArray[i] > 20) {
       finalNamesCount[counter] = [0, 0, 0];
     } else if (currYear - previousSponsorYearArray[i] >= 19) {
       finalNamesCount[counter] = [0, 0, 1];
@@ -813,7 +851,7 @@ function calcCycle(cycleType, cycleYear) {
     finalNamesSection[counter] = 'Section VI';
     if (currYear - previousPartnerSponsorYearArray[i] < 0) {
       finalCosignNamesCount[counter] = [0, 0, 0];
-    } else if (currYear - previousPartnerSponsorYearArray[i] >= 20) {
+    } else if (currYear - previousPartnerSponsorYearArray[i] > 20) {
       finalCosignNamesCount[counter] = [0, 0, 0];
     } else if (currYear - previousPartnerSponsorYearArray[i] >= 19) {
       finalCosignNamesCount[counter] = [0, 0, 1];
@@ -1014,3 +1052,5 @@ function detailedCalc(
 
   return displarResultsHTMLTable;
 }
+
+// Oct 11, 2023, Seperated Prinicapl applicant doesnt work properly. Please see example 6 and 7
