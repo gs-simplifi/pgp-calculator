@@ -712,14 +712,14 @@ function calcCycle(cycleType, cycleYear) {
       finalNamesCount[counter] = [0, 0, 1];
     } else if (currYear - sponsorChildYearArray[i] == 24) {
       finalNamesCount[counter] = [0, 1, 1];
-    } else if (currYear - sponsorChildYearArray[i] <= 23) {
-      finalNamesCount[counter] = [1, 1, 1];
-    } else if (currYear - sponsorChildYearArray[i] < 1) {
-      finalNamesCount[counter] = [0, 0, 0];
     } else if (currYear - sponsorChildYearArray[i] === 1) {
       finalNamesCount[counter] = [1, 0, 0];
+    } else if (currYear - sponsorChildYearArray[i] < 1) {
+      finalNamesCount[counter] = [0, 0, 0];
     } else if (currYear - sponsorChildYearArray[i] <= 2) {
       finalNamesCount[counter] = [1, 1, 0];
+    } else if (currYear - sponsorChildYearArray[i] <= 23) {
+      finalNamesCount[counter] = [1, 1, 1];
     }
 
     finalCosignNamesCount[counter] = finalNamesCount[counter];
@@ -812,14 +812,14 @@ function calcCycle(cycleType, cycleYear) {
       finalNamesCount[counter] = [0, 0, 1];
     } else if (currYear - principalChildYearArray[i] == 24) {
       finalNamesCount[counter] = [0, 1, 1];
-    } else if (currYear - principalChildYearArray[i] <= 23) {
-      finalNamesCount[counter] = [1, 1, 1];
     } else if (currYear - principalChildYearArray[i] < 1) {
       finalNamesCount[counter] = [0, 0, 0];
     } else if (currYear - principalChildYearArray[i] === 1) {
       finalNamesCount[counter] = [1, 0, 0];
     } else if (currYear - principalChildYearArray[i] <= 2) {
       finalNamesCount[counter] = [1, 1, 0];
+    } else if (currYear - principalChildYearArray[i] <= 23) {
+      finalNamesCount[counter] = [1, 1, 1];
     }
     finalCosignNamesCount[counter] = finalNamesCount[counter];
     counter++;
